@@ -1,6 +1,9 @@
 <?php 
+/* Challenge 3: Prime Factorization - Have the user enter a number and find all 
+Prime Factors (if there are any) and display them.
 
-// Same. Modified First challenge and added function from somewhere else
+I Modified First challenge and added function from somewhere else.
+*/
 
 if (isset($_POST['f'])) $f = sanitizeString($_POST['f']); 
 

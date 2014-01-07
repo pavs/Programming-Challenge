@@ -1,6 +1,7 @@
 <?php
+/* Challenge 4: Next Prime Number - Have the program find prime numbers until the user 
+chooses to stop asking for the next one.
 
-/*
 I asked a question about the nature of the program I am trying to write.
 But someone ended up doing the program for me. It obviously better than anthing
 I could have done so I decided to use it. 

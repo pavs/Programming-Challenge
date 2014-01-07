@@ -1,5 +1,9 @@
 <?php 
-// Used code from the first challenge and added function from somewhere else.
+/* Challenge 2:Fibonacci Sequence - Enter a number and have the program generate the 
+Fibonacci sequence to that number or to the Nth number.
+
+I Used code from the first challenge and added function from somewhere else.
+*/
 
 
 if (isset($_POST['f'])) $f = sanitizeString($_POST['f']); 

@@ -1,12 +1,16 @@
+ <html>
  <head> 
- <title>Calculate Area</title> 
+ 	<title>Calculate Area</title> 
  </head> 
  <body> 
 
 
- <?php 
+<?php 
 
-/*
+/* Challenge 5: Find Cost of Tile to Cover W x H Floor - Calculate the total cost 
+of tile it would take to cover a floor plan of width and height, using a 
+cost entered by the user.
+
 I did slight modification to an existing code to meet the requirements for this
 challenge. With minor addition to the original formular.
 */
@@ -25,8 +29,8 @@ challenge. With minor addition to the original formular.
  <h2>Calculate Area</h2> 
 
  <form action = "<?php echo $_SERVER['PHP_SELF']; ?>" method = "GET"> 
- Width (inch): <input type = "text" name = "width" size=4> <br/> 
- Length (inch): <input type = "text" name = "length" size=4> <br> 
+ 	Width (inch): <input type = "text" name = "width" size=4> <br/> 
+ 	Length (inch): <input type = "text" name = "length" size=4> <br> 
  <input type="hidden" name="calc" value ="yes"> 
  <input type = "submit" name = "Calculate"/> 
  </form> 
