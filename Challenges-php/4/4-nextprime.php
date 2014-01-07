@@ -1,4 +1,12 @@
 <?php
+
+/*
+I asked a question about the nature of the program I am trying to write.
+But someone ended up doing the program for me. It obviously better than anthing
+I could have done so I decided to use it. 
+*/
+
+
 $primes = array(
       2,   3,   5,   7,  11,  13,  17,  19,  23,  29, 
      31,  37,  41,  43,  47,  53,  59,  61,  67,  71, 

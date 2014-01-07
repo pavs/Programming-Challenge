@@ -1,4 +1,6 @@
 <?php 
+// Used code from the first challenge and added function from somewhere else.
+
 
 if (isset($_POST['f'])) $f = sanitizeString($_POST['f']); 
 

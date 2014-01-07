@@ -3,7 +3,14 @@
  </head> 
  <body> 
 
+
  <?php 
+
+/*
+I did slight modification to an existing code to meet the requirements for this
+challenge. With minor addition to the original formular.
+*/
+
  if ($_GET['calc'] == "yes") { 
  	$width = $_GET['width']; 
  	$length = $_GET['length']; 
