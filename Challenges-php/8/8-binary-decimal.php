@@ -9,6 +9,15 @@
 </html>
 
 <?php
+/*
+Challenge 8: Binary to Decimal and Back Converter - 
+Develop a converter to convert a decimal number to binary or a binary 
+number to its decimal equivalent. 
+
+
+*/
+
+
 
 if (isset($_POST['d'])) {
 	$d = sanitizeString($_POST['d']);
