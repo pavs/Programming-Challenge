@@ -1,274 +1,69 @@
-<?php
+<?
+/* Luhn algorithm number checker - (c) 2005-2008 shaman - www.planzero.org *
+ * This code has been released into the public domain, however please      *
+ * give credit to the original author where possible.                      */
 
-/************************************************************************************************************
- * This function has been placed in the public domain as detailed at:                                       *
- * http://www.braemoor.co.uk/software/index.shtml                                                           *
- *                                                                                                          *
- * "You are welcome to download and use any of this software, but please note that:                         *
- * All software is provided as freeware for personal or commercial use without obligation by either party.  *
- * The author will not accept responsibility for any problems that may be incurred by use of this software, *
- * although any errors reported will be corrected as soon as possible.                                      *
- * Re-distribution of this software is NOT permitted without explicit permission."                          *
- ************************************************************************************************************
+/* Challenge 13: Credit Card Validator - Takes in a credit card number from a common credit card vendor 
+(Visa, MasterCard, American Express, Discoverer) and validates it to make sure that it is a valid number 
+(look into how credit cards use a checksum). 
 
-This routine checks the credit card number. The following checks are made:
+*/
 
-1. A number has been provided
-2. The number is a right length for the card
-3. The number has an appropriate prefix for the card
-4. The number has a valid modulus 10 number check digit if required
+echo<<<_END
 
-If the validation fails an error is reported.
+<form method="post" action="13-creditcard-validator.php">
 
-The structure of credit card formats was gleaned from a variety of sources on 
-the web, although the best is probably on Wikepedia ("Credit card number"):
+Enter Your Credit Card number:
+<input type="text" name="credit" size="10" />
+<input type="submit" value="Validate" />
 
-  http://en.wikipedia.org/wiki/Credit_card_number
-
-Input parameters:
-            cardnumber          number on the card
-            cardname            name of card as defined in the card list below
-Output parameters:
-            cardnumber          number on the card
-            cardname            name of card as defined in the card list below
-
-==============================================================================*/
-echo <<<_END
-<form id="myform" method="post" action="13-creditcard-validator.php">
-  <p margin-top: 10px;><span style="color: #ff0000; margin-left: 20px;">Select credit card:</span> 
-    <input type="hidden" name="submitted" value="true" />       
-    <select tabindex="11" name="CardType" style="margin-left: 10px;" >
-      <option value="MasterCard">MasterCard</option>
-      <option value="American Express">American Express</option>
-      <option value="Carte Blanche">Carte Blanche</option>
-      <option value="Diners Club">Diners Club</option>
-      <option value="Discover">Discover</option>
-      <option value="Enroute">enRoute</option>
-      <option value="JCB">JCB</option>
-      <option value="Maestro">Maestro</option>
-      <option value="MasterCard">MasterCard</option>
-      <option value="Solo">Solo</option>
-      <option value="Switch">Switch</option>
-      <option value="Visa">Visa</option>
-      <option value="Visa Electron">Visa Electron</option>
-      <option value="LaserCard">Laser</option>
-    </select>
-    <span style="color: #ff0000; margin-left: 20px;">Enter number:
-    <input type="text" name="CardNumber" maxlength="24" size="24" style="margin-left: 10px;" value="" alt="Enter credit card number here" tabindex="12" />    
-    <input type="submit" name="submit" size="20" value="submit"  tabindex="13" alt="Click to submit credit card for validation" />
-    <br /> <span style="display: block; margin: 10px 0 0 20px; color: red; font-weight: bold;">Please enter credit card details</span>
-  </span></p>
 </form>
-
-
 _END;
-   
-if (isset($_POST['submitted'])) {
-  if (checkCreditCard ($_POST['CardNumber'], $_POST['CardType'], $ccerror, $ccerrortext)) {
-    $ccerrortext = 'This card has a valid format';
-  }
+
+if (isset($_POST['credit'])) {
+  $number = $_POST['credit'];
 }
 
-/* (isset($_POST['submitted'])) {
-  checkCreditCard ($_POST['CardNumber'], $_POST['CardType'], $ccerror, $ccerrortext);
-}*/
 
-function checkCreditCard ($cardnumber, $cardname, &$errornumber, &$errortext) {
+if (luhn_check($number) == TRUE) {
+  echo "The number is valid";
+}
 
-  // Define the cards we support. You may add additional card types.
-  
-  //  Name:      As in the selection box of the form - must be same as user's
-  //  Length:    List of possible valid lengths of the card number for the card
-  //  prefixes:  List of possible prefixes for the card
-  //  checkdigit Boolean to say whether there is a check digit
-  
-  // Don't forget - all but the last array definition needs a comma separator!
-  
-  $cards = array (  array ('name' => 'American Express', 
-                          'length' => '15', 
-                          'prefixes' => '34,37',
-                          'checkdigit' => true
-                         ),
-                   array ('name' => 'Diners Club Carte Blanche', 
-                          'length' => '14', 
-                          'prefixes' => '300,301,302,303,304,305',
-                          'checkdigit' => true
-                         ),
-                   array ('name' => 'Diners Club', 
-                          'length' => '14,16',
-                          'prefixes' => '36,38,54,55',
-                          'checkdigit' => true
-                         ),
-                   array ('name' => 'Discover', 
-                          'length' => '16', 
-                          'prefixes' => '6011,622,64,65',
-                          'checkdigit' => true
-                         ),
-                   array ('name' => 'Diners Club Enroute', 
-                          'length' => '15', 
-                          'prefixes' => '2014,2149',
-                          'checkdigit' => true
-                         ),
-                   array ('name' => 'JCB', 
-                          'length' => '16', 
-                          'prefixes' => '35',
-                          'checkdigit' => true
-                         ),
-                   array ('name' => 'Maestro', 
-                          'length' => '12,13,14,15,16,18,19', 
-                          'prefixes' => '5018,5020,5038,6304,6759,6761,6762,6763',
-                          'checkdigit' => true
-                         ),
-                   array ('name' => 'MasterCard', 
-                          'length' => '16', 
-                          'prefixes' => '51,52,53,54,55',
-                          'checkdigit' => true
-                         ),
-                   array ('name' => 'Solo', 
-                          'length' => '16,18,19', 
-                          'prefixes' => '6334,6767',
-                          'checkdigit' => true
-                         ),
-                   array ('name' => 'Switch', 
-                          'length' => '16,18,19', 
-                          'prefixes' => '4903,4905,4911,4936,564182,633110,6333,6759',
-                          'checkdigit' => true
-                         ),
-                   array ('name' => 'VISA', 
-                          'length' => '16', 
-                          'prefixes' => '4',
-                          'checkdigit' => true
-                         ),
-                   array ('name' => 'VISA Electron', 
-                          'length' => '16', 
-                          'prefixes' => '417500,4917,4913,4508,4844',
-                          'checkdigit' => true
-                         ),
-                   array ('name' => 'LaserCard', 
-                          'length' => '16,17,18,19', 
-                          'prefixes' => '6304,6706,6771,6709',
-                          'checkdigit' => true
-                         )
-                );
+elseif (luhn_check($number) == FALSE) {
+  echo "The number is not valid";
+}
 
-  $ccErrorNo = 0;
+else echo " ";
 
-  $ccErrors [0] = "Unknown card type";
-  $ccErrors [1] = "No card number provided";
-  $ccErrors [2] = "Credit card number has invalid format";
-  $ccErrors [3] = "Credit card number is invalid";
-  $ccErrors [4] = "Credit card number is wrong length";
-               
-  // Establish card type
-  $cardType = -1;
-  for ($i=0; $i<sizeof($cards); $i++) {
 
-    // See if it is this card (ignoring the case of the string)
-    if (strtolower($cardname) == strtolower($cards[$i]['name'])) {
-      $cardType = $i;
-      break;
-    }
-  }
-  
-  // If card type not found, report an error
-  if ($cardType == -1) {
-     $errornumber = 0;     
-     $errortext = $ccErrors [$errornumber];
-     return false; 
-  }
-   
-  // Ensure that the user has provided a credit card number
-  if (strlen($cardnumber) == 0)  {
-     $errornumber = 1;     
-     $errortext = $ccErrors [$errornumber];
-     return false; 
-  }
-  
-  // Remove any spaces from the credit card number
-  $cardNo = str_replace (' ', '', $cardnumber);  
-   
-  // Check that the number is numeric and of the right sort of length.
-  if (!preg_match("/^[0-9]{13,19}$/",$cardNo))  {
-     $errornumber = 2;     
-     $errortext = $ccErrors [$errornumber];
-     return false; 
-  }
-       
-  // Now check the modulus 10 check digit - if required
-  if ($cards[$cardType]['checkdigit']) {
-    $checksum = 0;                                  // running checksum total
-    $mychar = "";                                   // next char to process
-    $j = 1;                                         // takes value of 1 or 2
-  
-    // Process each digit one by one starting at the right
-    for ($i = strlen($cardNo) - 1; $i >= 0; $i--) {
-    
-      // Extract the next digit and multiply by 1 or 2 on alternative digits.      
-      $calc = $cardNo{$i} * $j;
-    
-      // If the result is in two digits add 1 to the checksum total
-      if ($calc > 9) {
-        $checksum = $checksum + 1;
-        $calc = $calc - 10;
+
+function luhn_check($number) {
+
+  // Strip any non-digits (useful for credit card numbers with spaces and hyphens)
+  $number=preg_replace('/\D/', '', $number);
+
+  // Set the string length and parity
+  $number_length=strlen($number);
+  $parity=$number_length % 2;
+
+  // Loop through each digit and do the maths
+  $total=0;
+  for ($i=0; $i<$number_length; $i++) {
+    $digit=$number[$i];
+    // Multiply alternate digits by two
+    if ($i % 2 == $parity) {
+      $digit*=2;
+      // If the sum is two digits, add them together (in effect)
+      if ($digit > 9) {
+        $digit-=9;
       }
-    
-      // Add the units element to the checksum total
-      $checksum = $checksum + $calc;
-    
-      // Switch the value of j
-      if ($j ==1) {$j = 2;} else {$j = 1;};
-    } 
-  
-    // All done - if checksum is divisible by 10, it is a valid modulus 10.
-    // If not, report an error.
-    if ($checksum % 10 != 0) {
-     $errornumber = 3;     
-     $errortext = $ccErrors [$errornumber];
-     return false; 
     }
-  }  
+    // Total up the digits
+    $total+=$digit;
+  }
 
-  // The following are the card-specific checks we undertake.
+  // If the total mod 10 equals 0, the number is valid
+  return ($total % 10 == 0) ? TRUE : FALSE;
 
-  // Load an array with the valid prefixes for this card
-  $prefix = explode(',',$cards[$cardType]['prefixes']);
-      
-  // Now see if any of them match what we have in the card number  
-  $PrefixValid = false; 
-  for ($i=0; $i<sizeof($prefix); $i++) {
-    $exp = '/^' . $prefix[$i] . '/';
-    if (preg_match($exp,$cardNo)) {
-      $PrefixValid = true;
-      break;
-    }
-  }
-      
-  // If it isn't a valid prefix there's no point at looking at the length
-  if (!$PrefixValid) {
-     $errornumber = 3;     
-     $errortext = $ccErrors [$errornumber];
-     return false; 
-  }
-    
-  // See if the length is valid for this card
-  $LengthValid = false;
-  $lengths = explode(',',$cards[$cardType]['length']);
-  for ($j=0; $j<sizeof($lengths); $j++) {
-    if (strlen($cardNo) == $lengths[$j]) {
-      $LengthValid = true;
-      break;
-    }
-  }
-  
-  // See if all is OK by seeing if the length was valid. 
-  if (!$LengthValid) {
-     $errornumber = 4;     
-     $errortext = $ccErrors [$errornumber];
-     return false; 
-  };   
-  
-  // The credit card is in the required format.
-  return true;
 }
-/*============================================================================*/
 ?>
