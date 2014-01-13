@@ -42,17 +42,7 @@ if (isset($_POST['bubble'])){
 
 
 
-/* test bubble sort 
 
-$arr = array(1,3,2,8,5,7,4,0);
-
-print("Before sorting");
-print_r($arr);
-
-bubble_sort($arr);
-print("After sorting by using bubble sort");
-print_r($arr);
-*/
 
 // The nitty gritty
 // This is it! Get the data to process, split it into halfs and compare
