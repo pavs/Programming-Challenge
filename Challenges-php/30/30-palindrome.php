@@ -29,6 +29,4 @@ if (isset($_POST['palindrome'])) {
 	
 }
 
-
-
 ?>
