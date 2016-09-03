@@ -1,9 +1,10 @@
 ## Synopsis
 
-My eternal hopeless attempt in trying to get serious about learning programming. There has been so many false starts and abandoned starts that its not even funny. I am kinda sad about and now I am hoping to do something about it. In 2014, I made my best attempt to get serious about learning and gettng good at programming. This repository is result of that. I had to abandon it for whatever reason and now that I look back at the code I hardly recognize whats going, mostly because it wasn't properly commented but also because I forgot most of the programming stuff I have painfully pushed myself to learn.
+My eternal hopeless attempt in trying to get serious about learning programming. There has been so many false and abandoned starts that its not even funny. I am kinda sad about it and now I am hoping to do something about it. In 2014, I made my best attempt to get serious about learning and gettng good at programming. This repository is result of that. I had to abandon it for whatever reason and now that I look back at the code I hardly recognize whats going on, mostly because it wasn't properly commented but also because I forgot most of the programming stuff I have painfully pushed myself to learn.
 
 ![index](https://raw.githubusercontent.com/pavs/Programming-Challenge/master/img/Screen%20Shot%202016-09-03%20at%2011.28.19%20PM.png)
 
+**Its list of challenges I am going to implement and learng programming in the process.** The list has been collected from Mega Project List. I might add more challenges in the future. I might add more challenges in the future but it will depend on how well I get at it or if I am still enjoying doing it.
 
 ## Motivation
 
